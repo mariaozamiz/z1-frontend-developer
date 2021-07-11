@@ -2,7 +2,7 @@
 
 Se trata de un app de captura de imagen que toma fotografías automáticamente y las valida con ayuda de una API. [Puedes verla en funcionamiento aquí](https://mariaozamiz.github.io/z1-frontend-developer/).
 
-![Captura de pantalla](https://github.com/mariaozamiz/z1-frontend-developer/blob/master/src/images/bankclient.jpg?raw=true)
+![Captura de pantalla](https://raw.githubusercontent.com/mariaozamiz/z1-frontend-developer/main/src/images/bankclient.png)
 
 
 ## Instalación
@@ -21,7 +21,6 @@ Se trata de un app de captura de imagen que toma fotografías automáticamente y
 
 - Pulsando "take picture" nos dirigiremos a la interfaz de la cámara. Para ello he utilizado ```react-router```.
 - Si la app no puede acceder a la cámara, ya sea porque el permiso haya sido denegado o cualquier otro problema, surgirá una alerta informando a la persona usuaria.
-- Si la app se usa desde un móvil, se activará la cámara trasera gracias a la especificación de ```facingMode```. De lo contrario, se activaría la frontal por defecto.
 - Se toman capturas del video automáticamente cada dos segundos.
 - Por cada captura, se hace una petición a la API, que responderá informando de la validez de la foto.
 -  Si la imagen no es válida, seguirá mostrándose la captura de vídeo acompañada de un borde rojo y un mensaje de advertencia: "Room lighting is too low".
