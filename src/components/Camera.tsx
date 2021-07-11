@@ -5,6 +5,8 @@ import Bulb from '../images/bulb-icon.svg';
 
 const Camera = () => {
     let videoObject: any;
+    let canvasObject: any;
+    let canvasContext: any;
 
     useEffect(() => {
         let track: any;
@@ -25,6 +27,17 @@ const Camera = () => {
         };
     }, []);
 
+    const shoot = () => {
+        //define size
+        const width = videoObject.videoWidth;
+        const height = videoObject.videoHeight;
+        canvasObject.width = width;
+        canvasObject.height = height;
+        //save image data
+        canvasContext.drawImage(videoObject, 0, 0, width, height);
+        const imageData: any = canvasObject.toDataURL('image/jpeg');
+    };
+
     return (
         <div className="camera">
             <main className="main">
@@ -39,10 +52,19 @@ const Camera = () => {
                         ref={(videoRef) => (videoObject = videoRef)}
                         autoPlay
                     ></video>
-                    <hr className="scan-line" />
+                    <canvas
+                        ref={(canvasRef) => {
+                            canvasObject = canvasRef;
+                            if (canvasObject)
+                                canvasContext = canvasObject.getContext('2d');
+                        }}
+                    ></canvas>
                 </div>
                 <img className="icon" alt="" src={Bulb} />
                 <p className="text">Room lighting is too low</p>
+                <button className="btn btn-shot" onClick={shoot}>
+                    shoot
+                </button>
                 <Link to="/">
                     <button className="btn btn-cancel">cancel</button>
                 </Link>
