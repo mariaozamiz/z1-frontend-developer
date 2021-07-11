@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
+import checkPhotoValidity from '../services/checkPhotoValidity';
 import Bulb from '../images/bulb-icon.svg';
 import Ok from '../images/ok-icon.svg';
 
@@ -46,26 +47,16 @@ const Camera = () => {
         canvasObject.height = height;
         //save image data
         canvasContext.drawImage(videoObject, 0, 0, width, height);
-        const imageData: any = canvasObject.toDataURL('image/jpeg');
-        //setPhotoTaken(true);
-        fetch('https://front-exercise.z1.digital/evaluations', {
-            method: 'POST',
-            headers: {
-                Accept: 'application/json',
-                // 'Content-Type': 'image/jpeg',
-            },
-            body: imageData,
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                if (data.summary.outcome === 'Approved') {
-                    clearInterval(timer);
-                    setAccepted(true);
-                    setTimeout(() => {
-                        /*volver a pantalla ppal*/
-                    }, 1000);
-                }
-            });
+        let imageData: any = canvasObject.toDataURL('image/jpeg');
+        checkPhotoValidity(imageData).then((data) => {
+            if (data.summary.outcome === 'Approved') {
+                clearInterval(timer);
+                setAccepted(true);
+                setTimeout(() => {
+                    /*volver a pantalla ppal*/
+                }, 1000);
+            }
+        });
     };
 
     return (
