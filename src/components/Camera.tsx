@@ -2,13 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import Bulb from '../images/bulb-icon.svg';
+import Ok from '../images/ok-icon.svg';
 
 const Camera = () => {
     let videoObject: any;
     let canvasObject: any;
     let canvasContext: any;
+    let timer: any;
 
-    const [photoTaken, setPhotoTaken] = useState(false);
     const [accepted, setAccepted] = useState(false);
 
     useEffect(() => {
@@ -24,12 +25,13 @@ const Camera = () => {
             .then((localMediaStream) => {
                 videoObject.srcObject = localMediaStream;
                 track = localMediaStream.getTracks()[0];
+                timer = setInterval(shoot, 2000);
             })
             .catch((error) => {
                 window.alert('Sorry! Could not access to your camera');
             });
-
-        return function stopCamera() {
+        return function cleanUp() {
+            if (timer) clearInterval(timer);
             if (track) {
                 track.stop();
             }
@@ -45,7 +47,7 @@ const Camera = () => {
         //save image data
         canvasContext.drawImage(videoObject, 0, 0, width, height);
         const imageData: any = canvasObject.toDataURL('image/jpeg');
-        setPhotoTaken(true);
+        //setPhotoTaken(true);
         fetch('https://front-exercise.z1.digital/evaluations', {
             method: 'POST',
             headers: {
@@ -57,7 +59,11 @@ const Camera = () => {
             .then((response) => response.json())
             .then((data) => {
                 if (data.summary.outcome === 'Approved') {
+                    clearInterval(timer);
                     setAccepted(true);
+                    setTimeout(() => {
+                        /*volver a pantalla ppal*/
+                    }, 1000);
                 }
             });
     };
@@ -76,12 +82,12 @@ const Camera = () => {
                     }
                 >
                     <video
-                        className={photoTaken ? 'hidden' : ''}
+                        className={accepted ? 'hidden' : ''}
                         ref={(videoRef) => (videoObject = videoRef)}
                         autoPlay
                     ></video>
                     <canvas
-                        className={photoTaken ? '' : 'hidden'}
+                        className={accepted ? '' : 'hidden'}
                         ref={(canvasRef) => {
                             canvasObject = canvasRef;
                             if (canvasObject)
@@ -89,11 +95,14 @@ const Camera = () => {
                         }}
                     ></canvas>
                 </div>
-                <img className="icon" alt="" src={Bulb} />
-                <p className="text">Room lighting is too low</p>
-                <button className="btn btn-shot" onClick={shoot}>
-                    shoot
-                </button>
+                <div className="message">
+                    <img className="icon" alt="" src={accepted ? Ok : Bulb} />
+                    <p className="text">
+                        {accepted
+                            ? 'Picture taken!'
+                            : 'Room lighting is too low'}
+                    </p>
+                </div>
                 <Link to="/">
                     <button className="btn btn-cancel">cancel</button>
                 </Link>
