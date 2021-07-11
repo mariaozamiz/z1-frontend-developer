@@ -9,6 +9,7 @@ const Camera = () => {
     let canvasContext: any;
 
     const [photoTaken, setPhotoTaken] = useState(false);
+    const [accepted, setAccepted] = useState(false);
 
     useEffect(() => {
         let track: any;
@@ -45,6 +46,20 @@ const Camera = () => {
         canvasContext.drawImage(videoObject, 0, 0, width, height);
         const imageData: any = canvasObject.toDataURL('image/jpeg');
         setPhotoTaken(true);
+        fetch('https://front-exercise.z1.digital/evaluations', {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                // 'Content-Type': 'image/jpeg',
+            },
+            body: imageData,
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.summary.outcome === 'Approved') {
+                    setAccepted(true);
+                }
+            });
     };
 
     return (
@@ -55,7 +70,11 @@ const Camera = () => {
                     Fit your ID card inside the frame. The picture will be taken
                     automatically.
                 </p>
-                <div className="camera-frame">
+                <div
+                    className={
+                        'camera-frame ' + (accepted ? 'accepted' : 'rejected')
+                    }
+                >
                     <video
                         className={photoTaken ? 'hidden' : ''}
                         ref={(videoRef) => (videoObject = videoRef)}
