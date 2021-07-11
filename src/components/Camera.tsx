@@ -8,10 +8,18 @@ const Camera = () => {
     let canvasObject: any;
     let canvasContext: any;
 
+    const [photoTaken, setPhotoTaken] = useState(false);
+
     useEffect(() => {
         let track: any;
         navigator.mediaDevices
-            .getUserMedia({ video: true, audio: false })
+            .getUserMedia({
+                video: {
+                    facingMode: 'enviroment',
+                    width: 200,
+                },
+                audio: false,
+            })
             .then((localMediaStream) => {
                 videoObject.srcObject = localMediaStream;
                 track = localMediaStream.getTracks()[0];
@@ -36,6 +44,7 @@ const Camera = () => {
         //save image data
         canvasContext.drawImage(videoObject, 0, 0, width, height);
         const imageData: any = canvasObject.toDataURL('image/jpeg');
+        setPhotoTaken(true);
     };
 
     return (
@@ -48,11 +57,12 @@ const Camera = () => {
                 </p>
                 <div className="camera-frame">
                     <video
-                        className="player"
+                        className={photoTaken ? 'hidden' : ''}
                         ref={(videoRef) => (videoObject = videoRef)}
                         autoPlay
                     ></video>
                     <canvas
+                        className={photoTaken ? '' : 'hidden'}
                         ref={(canvasRef) => {
                             canvasObject = canvasRef;
                             if (canvasObject)

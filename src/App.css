@@ -45,14 +45,15 @@ hr {
 
 .camera-frame {
     border: 1px solid red;
-    width: calc(217px + 1.2rem);
-    height: calc(124px + 1.2rem);
+    /* width: calc(217px + 1.2rem);
+    height: calc(124px + 1.2rem); */
     border-radius: 12px;
     margin-top: 27px;
     object-fit: contain;
 }
 
-.video {
+.hidden {
+    display: none;
 }
 
 .btn {
