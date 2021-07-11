@@ -1,13 +1,20 @@
 import React from 'react';
-import logo from './logo.svg';
+import { Route, Switch } from 'react-router-dom';
+
 import './App.css';
 
+import Scan from './components/Scan';
+import Camera from './components/Camera';
+
 function App() {
-  return (
-    <div className="App">
-     <h1>hola mundo</h1>
-    </div>
-  );
+    return (
+        <div className="app">
+            <Switch>
+                <Route exact path="/" component={Scan} />
+                <Route exact path="/cam" component={Camera} />
+            </Switch>
+        </div>
+    );
 }
 
 export default App;
