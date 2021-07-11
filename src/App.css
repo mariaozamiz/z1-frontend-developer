@@ -40,16 +40,20 @@ hr {
     width: 290px;
 }
 
-.id-image {
+.camera-frame {
+    margin-top: 27px;
 }
 
-.camera-frame {
-    border: 1px solid red;
-    /* width: calc(217px + 1.2rem);
-    height: calc(124px + 1.2rem); */
+.accepted {
+    border: 1px solid #69cc8b;
     border-radius: 12px;
-    margin-top: 27px;
-    object-fit: contain;
+    padding: 0.5rem;
+}
+
+.rejected {
+    border: 1px solid #c00000;
+    border-radius: 12px;
+    padding: 0.5rem;
 }
 
 .hidden {
