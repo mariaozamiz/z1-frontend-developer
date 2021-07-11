@@ -56,6 +56,14 @@ hr {
     padding: 0.5rem;
 }
 
+.message {
+    display: flex;
+}
+
+.icon {
+    width: 30px;
+}
+
 .hidden {
     display: none;
 }
@@ -88,4 +96,5 @@ hr {
 .btn-cancel {
     background: transparent;
     border: none;
+    margin-top: 126px;
 }
