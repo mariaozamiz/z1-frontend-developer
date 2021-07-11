@@ -52,9 +52,6 @@ const Camera = () => {
             if (data.summary.outcome === 'Approved') {
                 clearInterval(timer);
                 setAccepted(true);
-                setTimeout(() => {
-                    /*volver a pantalla ppal*/
-                }, 1000);
             }
         });
     };
